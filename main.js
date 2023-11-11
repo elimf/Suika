@@ -7,7 +7,7 @@ import {
   Body,
   Sleeping,
 } from "matter-js";
-
+import { FRUITS } from "./fruits";
 const engine = Engine.create();
 const render = Render.create({
   engine,
