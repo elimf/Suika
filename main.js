@@ -42,14 +42,14 @@ const rightWall = Bodies.rectangle(605, 395, 30, 790, {
     fillStyle: "#E6B143",
   },
 });
-// const topLine = Bodies.rectangle(310, 150, 620, 2, {
-//   isStatic: true,
-//   isSensor: true,
-//   render: { fillStyle: "#E6B143" },
-//   label: "topLine",
-// });
+const topLine = Bodies.rectangle(310, 150, 620, 2, {
+  isStatic: true,
+  isSensor: true,
+  render: { fillStyle: "#E6B143" },
+  label: "topLine",
+});
 
-World.add(world, [ground, leftWall, rightWall]);
+World.add(world, [ground, leftWall, rightWall, topLine]);
 
 Render.run(render);
 Runner.run(engine);
@@ -86,6 +86,7 @@ function getRandomFruit() {
 }
 
 window.onkeydown = (event) => {
+  if (disableAction) return;
   switch (event.code) {
     case "ArrowLeft":
       if (interval) return;
@@ -93,24 +94,23 @@ window.onkeydown = (event) => {
       interval = setInterval(() => {
         console.log(currentBody.position.x);
         if (currentBody.position.x - 20 > 30)
-        Body.setPosition(currentBody, {
-          x: currentBody.position.x - 1,
-          y: currentBody.position.y,
-        });
+          Body.setPosition(currentBody, {
+            x: currentBody.position.x - 1,
+            y: currentBody.position.y,
+          });
       }, 5);
     case "ArrowRight":
       if (interval) return;
       interval = setInterval(() => {
         console.log(currentBody.position.x);
         if (currentBody.position.x + 20 < 590)
-        Body.setPosition(currentBody, {
-          x: currentBody.position.x + 1,
-          y: currentBody.position.y,
-        });
+          Body.setPosition(currentBody, {
+            x: currentBody.position.x + 1,
+            y: currentBody.position.y,
+          });
       }, 5);
       break;
     case "Space":
-      if (disableAction) return;
       disableAction = true;
       Sleeping.set(currentBody, false);
       setTimeout(() => {
