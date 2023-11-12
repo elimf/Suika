@@ -6,8 +6,10 @@ import {
   World,
   Body,
   Sleeping,
+  Events,
 } from "matter-js";
 import { FRUITS } from "./fruits";
+
 const engine = Engine.create();
 const render = Render.create({
   engine,
@@ -40,55 +42,76 @@ const rightWall = Bodies.rectangle(605, 395, 30, 790, {
     fillStyle: "#E6B143",
   },
 });
-
-const box = Bodies.circle(50, 50, 50, {
-  restitution: 1,
-});
+// const topLine = Bodies.rectangle(310, 150, 620, 2, {
+//   isStatic: true,
+//   isSensor: true,
+//   render: { fillStyle: "#E6B143" },
+//   label: "topLine",
+// });
 
 World.add(world, [ground, leftWall, rightWall]);
+
 Render.run(render);
 Runner.run(engine);
 
-let currentFuit = null;
-let currentFruitInterval = null;
+let currentBody = null;
+let currentFruit = null;
+let interval = null;
 let disableAction = false;
+
 function addCurrentFruit() {
-  const fruit = Bodies.circle(300, 50, 20, {
+  const randomFruit = getRandomFruit();
+  const body = Bodies.circle(300, 50, randomFruit.radius, {
+    label: randomFruit.label,
     isSleeping: true,
     render: {
-      fillStyle: "black",
+      fillStyle: randomFruit.color,
     },
-    restitution: 1,
+    restitution: 0.2,
   });
-  currentFuit = fruit;
-  World.add(world, fruit);
+  currentBody = body;
+  currentFruit = randomFruit;
+  World.add(world, body);
 }
+
+function getRandomFruit() {
+  const randomIndex = Math.floor(Math.random() * 5);
+  const fruit = FRUITS[randomIndex];
+
+  if (currentFruit && currentFruit.label === fruit.label)
+    return getRandomFruit();
+
+  return fruit;
+}
+
 window.onkeydown = (event) => {
   switch (event.code) {
     case "ArrowLeft":
-      if (currentFruitInterval) return;
-      currentFruitInterval = setInterval(() => {
-        if (currentFuit.position.x - 20 < 30)
-          Body.setPosition(currentFuit, {
-            x: currentFuit.position.x - 1,
-            y: currentFuit.position.y,
-          });
+      if (interval) return;
+      console.log(currentBody.position.x);
+      interval = setInterval(() => {
+        console.log(currentBody.position.x);
+        if (currentBody.position.x - 20 > 30)
+        Body.setPosition(currentBody, {
+          x: currentBody.position.x - 1,
+          y: currentBody.position.y,
+        });
       }, 5);
-      break;
     case "ArrowRight":
-      if (currentFruitInterval) return;
-      currentFruitInterval = setInterval(() => {
-        if (currentFuit.position.x + 20 < 590)
-          Body.setPosition(currentFuit, {
-            x: currentFuit.position.x + 1,
-            y: currentFuit.position.y,
-          });
+      if (interval) return;
+      interval = setInterval(() => {
+        console.log(currentBody.position.x);
+        if (currentBody.position.x + 20 < 590)
+        Body.setPosition(currentBody, {
+          x: currentBody.position.x + 1,
+          y: currentBody.position.y,
+        });
       }, 5);
       break;
     case "Space":
-      if(disableAction) return;
+      if (disableAction) return;
       disableAction = true;
-      Sleeping.set(currentFuit, false);
+      Sleeping.set(currentBody, false);
       setTimeout(() => {
         addCurrentFruit();
         disableAction = false;
@@ -99,8 +122,46 @@ window.onkeyup = (event) => {
   switch (event.code) {
     case "ArrowLeft":
     case "ArrowRight":
-      clearInterval(currentFruitInterval);
-      currentFruitInterval = null;
+      clearInterval(interval);
+      interval = null;
   }
 };
+
+Events.on(engine, "collisionStart", (event) => {
+  event.pairs.forEach((collision) => {
+    if (collision.bodyA.label === collision.bodyB.label) {
+      World.remove(world, [collision.bodyA, collision.bodyB]);
+
+      const index = FRUITS.findIndex(
+        (fruit) => fruit.label === collision.bodyA.label
+      );
+
+      // If last fruit, do nothing
+      if (index === FRUITS.length - 1) return;
+
+      const newFruit = FRUITS[index + 1];
+      const body = Bodies.circle(
+        collision.collision.supports[0].x,
+        collision.collision.supports[0].y,
+        newFruit.radius,
+        {
+          render: {
+            fillStyle: newFruit.color,
+            sprite: { texture: `/${newFruit.label}.png` },
+          },
+          label: newFruit.label,
+        }
+      );
+      World.add(world, body);
+    }
+    if (
+      (collision.bodyA.label === "topLine" ||
+        collision.bodyB.label === "topLine") &&
+      !disableAction
+    ) {
+      alert("Game over");
+    }
+  });
+});
+
 addCurrentFruit();
