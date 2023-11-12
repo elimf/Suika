@@ -13,7 +13,7 @@ import { FRUITS } from "./fruits";
 const engine = Engine.create();
 const render = Render.create({
   engine,
-  element: document.body,
+  element: document.getElementById("app"),
   options: {
     wireframes: false,
     background: "#F7F4C8",
@@ -66,6 +66,7 @@ function addCurrentFruit() {
     isSleeping: true,
     render: {
       fillStyle: randomFruit.color,
+      sprite: { texture: `/${randomFruit.label}.png` },
     },
     restitution: 0.2,
   });
