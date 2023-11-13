@@ -1,13 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/style.css" />
     <title>Suika Game</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div id="game-canvas">
+        <div id="game-ui">
+          <p id="game-score"></p>
+
+          <div id="game-end-container">
+            <div id="game-end">
+              <div id="game-end-title">Game Over!</div>
+              <a id="game-end-link" href="">Try Again</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="game-status">
+        <div class="game-status-item">
+          <div class="game-status-label">Next</div>
+          <img id="game-next-fruit" src="/public/apple.png" />
+        </div>
+      </div>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
