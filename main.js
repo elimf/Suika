@@ -39,7 +39,7 @@ const render = Render.create({
   element: gameOptions.elements.canvas,
   options: {
     wireframes: false,
-    background: "#F7F4C8",
+    background: "transparent",
     width: gameOptions.width,
     height: gameOptions.height,
   },

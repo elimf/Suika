@@ -103,7 +103,6 @@ body {
 }
 
 #game-status {
-  background-color: var(--col-bg-lighter);
   display: flex;
 }
 
@@ -116,9 +115,7 @@ body {
 
 .game-status-label {
   color: #666;
-  font-size: 16px;
-  margin-left: 24px;
-  margin-right: 8px;
+  font-size: 36px;
 }
 
 #game-highscore-value {
@@ -128,18 +125,20 @@ body {
 }
 
 #game-next-fruit {
-  width: 24px;
-  height: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 10px;
 }
 canvas {
   height: 85%;
 }
 #image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  flex-direction: column;
 }
 
 .circle-image {
