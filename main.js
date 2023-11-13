@@ -7,7 +7,7 @@ import {
   Body,
   Sleeping,
   Events,
-  } from "matter-js";
+} from "matter-js";
 import { FRUITS } from "./fruits";
 const friction = {
   friction: 0.006,
@@ -161,8 +161,11 @@ function startGame() {
         const index = FRUITS.findIndex(
           (fruit) => fruit.label === collision.bodyA.label
         );
-        // If last fruit, do nothing
-        if (index === FRUITS.length - 1) return;
+
+        if (index === FRUITS.length - 1) {
+          calculateScore();
+          return;
+        }
 
         const newFruit = FRUITS[index + 1];
         const body = Bodies.circle(
@@ -191,10 +194,10 @@ function startGame() {
     });
   });
 }
-	 function loseGame () {
-		gameOptions.elements.end.style.display = 'flex';
-		runner.enabled = false;
-	}
+function loseGame() {
+  gameOptions.elements.end.style.display = "flex";
+  runner.enabled = false;
+}
 function calculateScore() {
   const score = gameOptions.fruitsMerged.reduce((total, count, sizeIndex) => {
     const value = FRUITS[sizeIndex].value * count;
