@@ -161,7 +161,6 @@ function startGame() {
         const index = FRUITS.findIndex(
           (fruit) => fruit.label === collision.bodyA.label
         );
-        console.log(index);
         // If last fruit, do nothing
         if (index === FRUITS.length - 1) return;
 
@@ -179,7 +178,6 @@ function startGame() {
           }
         );
         gameOptions.fruitsMerged[index] += 1;
-        console.log(gameOptions.fruitsMerged);
         World.add(world, body);
         calculateScore();
       }
@@ -188,7 +186,6 @@ function startGame() {
           collision.bodyB.label === "topLine") &&
         !disableAction
       ) {
-        alert("Game over");
         loseGame();
       }
     });
