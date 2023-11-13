@@ -134,3 +134,17 @@ body {
 canvas {
   height: 85%;
 }
+#image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    flex-direction: column;
+}
+
+.circle-image {
+  width: 50px; /* Ajustez la taille des images selon vos besoins */
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 10px; /* Ajustez la marge entre les images selon vos besoins */
+}

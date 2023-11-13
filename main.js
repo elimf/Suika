@@ -274,5 +274,12 @@ const resizeCanvas = () => {
   document.getElementById("game-ui").height = `${gameOptions.height}px`;
   document.getElementById("game-ui").style.transform = `scale(${scaleUI})`;
 };
+const imageContainer = document.getElementById("image-container");
+FRUITS.forEach((fruit) => {
+  const img = document.createElement("img");
+  img.src = `/${fruit.label}.png`;
+  img.classList.add("circle-image");
+  imageContainer.appendChild(img);
+});
 document.body.onload = resizeCanvas;
 document.body.onresize = resizeCanvas;
